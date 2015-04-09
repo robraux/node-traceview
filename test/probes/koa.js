@@ -43,6 +43,13 @@ var check = {
   }
 }
 
+function after (n, fn) {
+  return function () {
+    n--
+    if (n == 0) fn()
+  }
+}
+
 function controllerValidations (controller, action) {
   var profileName = controller + ' ' + action
   return [
@@ -212,7 +219,7 @@ exports.rum = function (emitter, done) {
   ]
 
   // Delay completion until both test paths end
-  var complete = helper.after(2, function () {
+  var complete = after(2, function () {
     server.close(done)
     delete tv.rumId
   })

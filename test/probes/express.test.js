@@ -13,6 +13,13 @@ var fs = require('fs')
 
 var pkg = require('express/package.json')
 
+function after (n, fn) {
+  return function () {
+    n--
+    if (n == 0) fn()
+  }
+}
+
 describe('probes.express', function () {
   var emitter
 
@@ -276,7 +283,7 @@ describe('probes.express', function () {
     ]
 
     // Delay completion until both test paths end
-    var complete = helper.after(2, function () {
+    var complete = after(2, function () {
       server.close(done)
       delete tv.rumId
     })
